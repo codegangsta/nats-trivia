@@ -8,7 +8,7 @@ body {
 
 @layer components {
   .tv-bounding-box {
-    @apply w-[640px] h-[360px] hd:w-[1280px] hd:h-[720px] fhd:w-[1920px] fhd:h-[1080px] border border-purple-400;
+    @apply w-[640px] h-[360px] hd:w-[1280px] hd:h-[720px] fhd:w-[1920px] fhd:h-[1080px];
   }
 
   .btn-choice {
@@ -19,7 +19,7 @@ body {
   }
 
   .btn-choice.selected {
-    @apply border-purple-400 text-white font-bold;
+    @apply border-purple-500 text-white font-bold;
   }
 
   .chat-bubble {

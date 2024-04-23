@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "Inter";
+}
+
+@layer components {
+  .tv-bounding-box {
+    @apply w-[640px] h-[360px] hd:w-[1280px] hd:h-[720px] fhd:w-[1920px] fhd:h-[1080px] border border-purple-400;
+  }
+
+  .btn-choice {
+    @apply border-2 border-zinc-700 rounded-md px-8 py-6 text-lg text-left;
+  }
+  .btn-choice:hover {
+    @apply bg-zinc-800;
+  }
+
+  .btn-choice.selected {
+    @apply border-purple-400 text-white font-bold;
+  }
+
+  .chat-bubble {
+    @apply rounded-3xl rounded-bl-none bg-zinc-800 p-6 flex flex-col gap-4 relative;
+  }
+
+  .chat-bubble:before {
+    content: "";
+    @apply absolute bg-zinc-800 w-6 h-6 bottom-0 -left-6;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMycgaGVpZ2h0PSczJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9J2JsYWNrJyBkPSdtIDAgMyBMIDMgMyBMIDMgMCBDIDMgMSAxIDMgMCAzJy8+PC9zdmc+);
+  }
+}

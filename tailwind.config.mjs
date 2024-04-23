@@ -3,6 +3,11 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      screens: {
+        hd: "1280px",
+        fhd: "1920px",
+        uhd: "3840px",
+      },
       colors: {
         nats: {
           base: "#00E492",

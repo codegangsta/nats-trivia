@@ -5,9 +5,12 @@ import Layout from '../layouts/layout.astro'
 <Layout title="NATS Trivia">
   <div class="absolute inset-0 flex items-center justify-center">
     <div class="tv-bounding-box relative flex flex-col items-center justify-center gap-9 p-9">
-      <div class="flex-grow"></div>
+      <div class="flex items-center w-full">
+        <span class="flex-grow text-2xl font-semibold text-zinc-300">Question 1</span>
+        <span class="font-semibold text-4xl bg-zinc-800 border-[6px] border-purple-500 rounded-full p-4">60</span>
+      </div>
       <div class="w-full flex gap-12">
-        <img src="/people/jeremy.jpeg" class="rounded-full w-36 h-36 border-[4px] border-purple-500 self-end" alt="TV" />
+        <img src="/people/jeremy.jpeg" class="rounded-full w-36 h-36 border-[2px] border-zinc-800 self-end" alt="TV" />
         <div class="flex flex-col gap-2">
           <span class="flex flex-row gap-2">
             <span class="font-medium text-zinc-50">Jeremy Saenz</span>
@@ -27,7 +30,6 @@ import Layout from '../layouts/layout.astro'
         <button class="btn-choice">Something Else</button>
       </div>
 
-      <span class="absolute top-9 right-9 font-semibold text-4xl bg-zinc-800 border-[4px] border-purple-500 rounded-full p-4">60</span>
     </div>
   </div>
 </Layout>

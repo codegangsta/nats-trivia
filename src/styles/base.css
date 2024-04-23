@@ -12,7 +12,7 @@ body {
   }
 
   .btn-choice {
-    @apply border-2 border-zinc-700 rounded-md px-8 py-6 text-lg text-left;
+    @apply border-2 border-zinc-700 rounded-3xl px-8 py-6 text-lg text-left;
   }
   .btn-choice:hover {
     @apply bg-zinc-800;

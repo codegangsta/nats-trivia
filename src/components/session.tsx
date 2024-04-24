@@ -4,7 +4,7 @@ import {
   type Question as QuestionType,
   type Session as SessionType,
 } from "../schema";
-import { createStore } from "solid-js/store";
+import { createStore, unwrap } from "solid-js/store";
 import { createTimer } from "@solid-primitives/timer";
 import { Question } from "./question";
 import { questionTemplates } from "../data/questions";
@@ -23,6 +23,7 @@ export function Session(props: Props) {
   const [session, setSessionInternal] = createStore<SessionType>({
     id: props.id,
     questions: {},
+    answers: {},
     questionTemplates: questionTemplates,
     state: "question",
   });
@@ -39,8 +40,9 @@ export function Session(props: Props) {
     setSessionInternal(...[...parts, v]);
   });
 
-  const setSession = (key: string, value: any) => {
-    kv.put(`session.${session.id}.${key}`, value);
+  const setSession = (...args: any[]) => {
+    const val = args.pop();
+    kv.put(`session.${session.id}.${args.join(".")}`, val);
   };
 
   const chooseQuestion = async () => {
@@ -50,16 +52,26 @@ export function Session(props: Props) {
     const question: QuestionType = {
       id: Math.random().toString(36).substring(7),
       template: session.questionTemplates[key],
+      answers: {},
     };
     setSession("current", question);
     setSession("state", "question");
+    setSession("questions", question.id, question);
+  };
+
+  const latest = () => {
+    // return the latest question
+    const key = Object.keys(session.questions).pop();
+    if (!key) return null;
+
+    return session.questions[key];
   };
 
   createEffect(() => {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(10);
+        setSeconds(60);
         break;
 
       case "answer":
@@ -67,7 +79,7 @@ export function Session(props: Props) {
         break;
 
       case "leaderboard":
-        setSession("current", null);
+        // setSession("current", null);
         setSeconds(5);
         break;
     }
@@ -100,11 +112,11 @@ export function Session(props: Props) {
   return (
     <Switch fallback={<div>Loading...</div>}>
       <Match when={session.state == "question" && session.current}>
-        <Question question={session.current} seconds={seconds()} />
+        <Question question={latest()} seconds={seconds()} />
       </Match>
 
       <Match when={session.state == "answer" && session.current}>
-        <Question question={session.current} showAnswer />
+        <Question question={latest()} showAnswer />
       </Match>
 
       <Match when={session.state == "leaderboard"}>Showing Leaderboard</Match>

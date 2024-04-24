@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js";
+import { For, Show, createEffect, createSignal } from "solid-js";
 import type { Question as QuestionType } from "../schema";
 import { cn } from "../utils/styles";
 
@@ -6,12 +6,47 @@ interface Props {
   question?: QuestionType;
   seconds?: number;
   showAnswer?: boolean;
+  onAnswer?: (answer: string) => void;
+  selectable?: boolean;
 }
 
 export function Question(props: Props) {
+  const [selected, setSelected] = createSignal<string | undefined>();
   if (!props.question) {
     return <div>Loading...</div>;
   }
+
+  const setAnswer = (answer: string) => {
+    if (!props.selectable) return;
+
+    setSelected(answer);
+    props.onAnswer?.(answer);
+  };
+
+  // map answers by choice so they can be counted
+  const answerCounts = () => {
+    if (!props.question) return {};
+
+    // count answers by choice
+    const counts: Record<string, number> = {};
+    for (const choice of props.question.template.choices) {
+      counts[choice] = 0;
+    }
+
+    for (const answer of Object.values(props.question.answers)) {
+      counts[answer.answer]++;
+    }
+    return counts;
+  };
+
+  const answerTotal = () => {
+    return Object.keys(props.question?.answers ?? {}).length;
+  };
+
+  const answerPercent = (choice: string) => {
+    if (!answerCounts()[choice]) return 0;
+    return (answerCounts()[choice] / answerTotal()) * 100;
+  };
 
   return (
     <>
@@ -50,14 +85,27 @@ export function Question(props: Props) {
         <For each={props.question.template.choices}>
           {(choice) => (
             <button
+              onClick={() => setAnswer(choice)}
               class={cn(
-                "btn-choice",
+                "btn-choice relative overflow-hidden",
                 props.showAnswer && choice === props.question?.template.answer
                   ? "correct"
                   : "",
+                choice === selected() ? "selected" : "",
               )}
             >
               {choice}
+              <span
+                class="bg-zinc-800/50 absolute inset-0 -z-10 transition-all"
+                style={{
+                  width: `${answerPercent(choice)}%`,
+                }}
+              ></span>
+              <Show when={answerCounts()[choice] > 0}>
+                <span class="float-right text-zinc-400">
+                  {answerCounts()[choice]}
+                </span>
+              </Show>
             </button>
           )}
         </For>

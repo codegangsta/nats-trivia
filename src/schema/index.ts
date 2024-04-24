@@ -32,7 +32,7 @@ export type QuestionTemplate = z.infer<typeof QuestionTemplateSchema>;
 export const QuestionSchema = z.object({
   id: z.string(),
   template: QuestionTemplateSchema,
-  answers: z.record(z.string(), PlayerAnswerSchema).optional(),
+  answers: z.record(z.string(), PlayerAnswerSchema),
 });
 export type Question = z.infer<typeof QuestionSchema>;
 
@@ -40,6 +40,7 @@ export const SessionSchema = z.object({
   id: z.string(),
   questionTemplates: z.record(z.string(), QuestionTemplateSchema),
   questions: z.record(z.string(), QuestionSchema),
+  answers: z.record(z.string(), PlayerAnswerSchema),
   current: QuestionSchema.optional(),
   state: z.enum(["connecting", "question", "answer", "leaderboard"]),
 });

@@ -19,7 +19,7 @@ body {
   }
 
   .btn-choice.selected {
-    @apply border-purple-500 text-white font-bold;
+    @apply border-purple-500 bg-purple-900/50 text-white font-bold;
   }
 
   .btn-choice.correct {

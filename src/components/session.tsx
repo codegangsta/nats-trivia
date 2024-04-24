@@ -71,7 +71,7 @@ export function Session(props: Props) {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(60);
+        setSeconds(30);
         break;
 
       case "answer":

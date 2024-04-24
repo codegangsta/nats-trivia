@@ -8,6 +8,11 @@ import { createStore } from "solid-js/store";
 import { createTimer } from "@solid-primitives/timer";
 import { Question } from "./question";
 import { questionTemplates } from "../data/questions";
+import { connect, jwtAuthenticator } from "nats.ws";
+import { createKV } from "../lib/nats-kv";
+
+const jwt =
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJlZDI1NTE5LW5rZXkifQ.eyJqdGkiOiJIUEJKS01SNkpHMlJKRlg3N1ZWQU1MUjNPVldCRENMSUpYSkwzMklGWExGM1lRTkRQTkhRIiwiaWF0IjoxNzEzOTA3MDUzLCJpc3MiOiJBQ0MyTllZRFFSWkFBTk5WNkNHNDdYUklBWkxZMlhSTjVNMkpWUkZWUFFZQ083WUU1SU9aSFlSSCIsIm5hbWUiOiJ0cml2aWEiLCJzdWIiOiJVRFk2QUJPTFJNNlhMTFY3RTQ3UVlCWE42S04zT0ZQWkFORzQzR1lOVVdUN01WVEFBQ1FLNUlKVyIsIm5hdHMiOnsicHViIjp7fSwic3ViIjp7fSwic3VicyI6LTEsImRhdGEiOi0xLCJwYXlsb2FkIjotMSwiYmVhcmVyX3Rva2VuIjp0cnVlLCJpc3N1ZXJfYWNjb3VudCI6IkFBRDdUS1JMTE5LRFdFQlZMREY0S0FZRFNYM1FPUERENE80QzZONFlZUk0zREpOV002TFdXVEpDIiwidHlwZSI6InVzZXIiLCJ2ZXJzaW9uIjoyfX0.UkMAAFj7YyrQEWE7Qq3grxxL1Qs90oGibd6kl_DNw-sBV7YVtctGbSIAZExUGkjvPIFbKi3rsRAkjb52Gje2AQ";
 
 interface Props {
   id: string;
@@ -15,12 +20,28 @@ interface Props {
 
 export function Session(props: Props) {
   const [seconds, setSeconds] = createSignal(0);
-  const [session, setSession] = createStore<SessionType>({
+  const [session, setSessionInternal] = createStore<SessionType>({
     id: props.id,
     questions: {},
     questionTemplates: questionTemplates,
     state: "question",
   });
+
+  const nc = connect({
+    servers: ["wss://connect.ngs.global"],
+    authenticator: jwtAuthenticator(jwt),
+  });
+
+  const kv = createKV(nc, "trivia");
+  kv.watch(`session.${session.id}.>`, (k, v) => {
+    const parts = k.split(".").slice(2);
+    /*@ts-ignore*/
+    setSessionInternal(...[...parts, v]);
+  });
+
+  const setSession = (key: string, value: any) => {
+    kv.put(`session.${session.id}.${key}`, value);
+  };
 
   const chooseQuestion = async () => {
     const keys = Object.keys(session.questionTemplates);
@@ -36,9 +57,6 @@ export function Session(props: Props) {
 
   createEffect(() => {
     switch (session.state) {
-      case "connecting":
-        break;
-
       case "question":
         chooseQuestion();
         setSeconds(5);

@@ -3,12 +3,16 @@ import type { Question as QuestionType } from "../schema";
 import { cn } from "../utils/styles";
 
 interface Props {
-  question: QuestionType;
+  question?: QuestionType;
   seconds?: number;
   showAnswer?: boolean;
 }
 
 export function Question(props: Props) {
+  if (!props.question) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div class="absolute top-8 right-8">

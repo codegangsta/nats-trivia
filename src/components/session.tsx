@@ -59,7 +59,7 @@ export function Session(props: Props) {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(5);
+        setSeconds(10);
         break;
 
       case "answer":
@@ -67,6 +67,7 @@ export function Session(props: Props) {
         break;
 
       case "leaderboard":
+        setSession("current", null);
         setSeconds(5);
         break;
     }

@@ -12,7 +12,7 @@ body {
   }
 
   .btn-choice {
-    @apply border-2 border-zinc-700 rounded-3xl px-8 py-6 text-lg text-left;
+    @apply border-2 border-zinc-700 rounded-3xl px-4 py-3 lg:px-8 lg:py-6 lg:text-lg lg:text-left;
   }
   .btn-choice:hover {
     @apply bg-zinc-800;
@@ -27,12 +27,12 @@ body {
   }
 
   .chat-bubble {
-    @apply rounded-3xl rounded-bl-none bg-zinc-800 p-6 flex flex-col gap-4 relative;
+    @apply rounded-3xl lg:rounded-bl-none bg-zinc-800 p-6 flex flex-col gap-4 relative;
   }
 
   .chat-bubble:before {
     content: "";
-    @apply absolute bg-zinc-800 w-6 h-6 bottom-0 -left-6;
+    @apply absolute bg-zinc-800 w-6 h-6 bottom-0 -left-6 invisible lg:visible;
     mask-size: contain;
     mask-repeat: no-repeat;
     mask-position: center;

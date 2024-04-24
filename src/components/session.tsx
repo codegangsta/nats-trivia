@@ -112,10 +112,12 @@ export function Session(props: Props) {
   return (
     <Switch fallback={<div>Loading...</div>}>
       <Match when={session.state == "question" && session.current}>
+        {/*@ts-ignore*/}
         <Question question={latest()} seconds={seconds()} />
       </Match>
 
       <Match when={session.state == "answer" && session.current}>
+        {/*@ts-ignore*/}
         <Question question={latest()} showAnswer />
       </Match>
 

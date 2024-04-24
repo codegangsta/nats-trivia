@@ -15,6 +15,7 @@ interface Props {
 }
 
 export function Session(props: Props) {
+  const [seconds, setSeconds] = createSignal(0);
   const [session, setSession] = createStore<SessionType>({
     id: props.id,
     questions: {},
@@ -27,7 +28,6 @@ export function Session(props: Props) {
     ),
     state: "question",
   });
-  const [seconds, setSeconds] = createSignal(0);
 
   const chooseQuestion = async () => {
     const keys = Object.keys(session.questionTemplates);
@@ -91,7 +91,9 @@ export function Session(props: Props) {
         <Question question={session.current} seconds={seconds()} />
       </Match>
 
-      <Match when={session.state == "answer"}>Showing Answer</Match>
+      <Match when={session.state == "answer" && session.current}>
+        <Question question={session.current} showAnswer />
+      </Match>
 
       <Match when={session.state == "leaderboard"}>Showing Leaderboard</Match>
     </Switch>

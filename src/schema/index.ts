@@ -6,6 +6,13 @@ export const PlayerSchema = z.object({
 });
 export type Player = z.infer<typeof PlayerSchema>;
 
+export const PlayerAnswerSchema = z.object({
+  player: PlayerSchema,
+  questionId: z.string(),
+  answer: z.string(),
+});
+export type PlayerAnswer = z.infer<typeof PlayerAnswerSchema>;
+
 export const EmployeeSchema = z.object({
   name: z.string(),
   title: z.string(),
@@ -25,6 +32,7 @@ export type QuestionTemplate = z.infer<typeof QuestionTemplateSchema>;
 export const QuestionSchema = z.object({
   id: z.string(),
   template: QuestionTemplateSchema,
+  answers: z.record(z.string(), PlayerAnswerSchema).optional(),
 });
 export type Question = z.infer<typeof QuestionSchema>;
 
@@ -33,5 +41,6 @@ export const SessionSchema = z.object({
   questionTemplates: z.record(z.string(), QuestionTemplateSchema),
   questions: z.record(z.string(), QuestionSchema),
   current: QuestionSchema.optional(),
+  state: z.enum(["connecting", "question", "answer", "leaderboard"]),
 });
 export type Session = z.infer<typeof SessionSchema>;

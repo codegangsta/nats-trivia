@@ -1,23 +1,16 @@
-import { For, Show, useContext } from "solid-js";
-import type { Question } from "../schema";
-import { SessionContext } from "./session-context";
+import { For, Show } from "solid-js";
+import type { Question as QuestionType } from "../schema";
 import { cn } from "../utils/styles";
 
 interface Props {
   seconds: number;
+  question: QuestionType;
   showAnswer?: boolean;
 }
 
 export function Question(props: Props) {
-  const context = useContext(SessionContext);
-  if (!context) {
-    throw new Error("SessionContext is not provided");
-  }
-  const { state, setState } = context;
-  const current = state.current;
-  if (!current) {
-    return null;
-  }
+  const { question } = props;
+  console.log("question", question);
 
   return (
     <>
@@ -38,15 +31,15 @@ export function Question(props: Props) {
           <div class="flex flex-col gap-2">
             <span class="flex flex-row gap-2">
               <span class="font-medium text-zinc-50">
-                {current.template.employee.name}
+                {question.template.employee.name}
               </span>
               <span class="text-zinc-400">
-                {current.template.employee.title}
+                {question.template.employee.title}
               </span>
             </span>
             <span class="chat-bubble self-start">
               <span class="text-4xl font-semibold">
-                {current.template.question}
+                {question.template.question}
               </span>
             </span>
           </div>
@@ -54,12 +47,12 @@ export function Question(props: Props) {
       </div>
 
       <div class="grid grid-cols-2 gap-6 w-full">
-        <For each={current.template.choices}>
+        <For each={question.template.choices}>
           {(choice) => (
             <button
               class={cn(
                 "btn-choice",
-                props.showAnswer && choice === current.template.answer
+                props.showAnswer && choice === question.template.answer
                   ? "correct"
                   : "",
               )}

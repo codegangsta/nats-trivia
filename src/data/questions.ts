@@ -6,7 +6,7 @@ const jeremy: Employee = {
   image: "/people/jeremy.jpeg",
 };
 
-export const questions: QuestionTemplate[] = [
+const questions: QuestionTemplate[] = [
   {
     id: "1",
     employee: jeremy,
@@ -135,3 +135,11 @@ export const questions: QuestionTemplate[] = [
     answer: "Batman",
   },
 ];
+
+export const questionTemplates = questions.reduce(
+  (acc, q) => {
+    acc[q.id] = q;
+    return acc;
+  },
+  {} as Record<string, QuestionTemplate>,
+);

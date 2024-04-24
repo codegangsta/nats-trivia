@@ -2,13 +2,12 @@ import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import {
   type Question as QuestionType,
-  type QuestionTemplate as QuestionTemplateType,
   type Session as SessionType,
 } from "../schema";
 import { createStore } from "solid-js/store";
 import { createTimer } from "@solid-primitives/timer";
 import { Question } from "./question";
-import { questions } from "../data/questions";
+import { questionTemplates } from "../data/questions";
 
 interface Props {
   id: string;
@@ -19,13 +18,7 @@ export function Session(props: Props) {
   const [session, setSession] = createStore<SessionType>({
     id: props.id,
     questions: {},
-    questionTemplates: questions.reduce(
-      (acc, q) => {
-        acc[q.id] = q;
-        return acc;
-      },
-      {} as Record<string, QuestionTemplateType>,
-    ),
+    questionTemplates: questionTemplates,
     state: "question",
   });
 
@@ -65,7 +58,7 @@ export function Session(props: Props) {
     async () => {
       setSeconds((prev) => Math.max(prev - 1, 0));
 
-      if (seconds() <= 0) {
+      if (seconds() == 0) {
         switch (session.state) {
           case "question":
             setSession("state", "answer");

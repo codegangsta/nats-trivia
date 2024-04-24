@@ -22,6 +22,10 @@ body {
     @apply border-purple-500 text-white font-bold;
   }
 
+  .btn-choice.correct {
+    @apply border-green-500 bg-green-700 text-white font-bold;
+  }
+
   .chat-bubble {
     @apply rounded-3xl rounded-bl-none bg-zinc-800 p-6 flex flex-col gap-4 relative;
   }

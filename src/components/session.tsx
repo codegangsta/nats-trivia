@@ -31,9 +31,9 @@ interface Props {
 }
 
 type Status = "connecting" | "question" | "answer" | "leaderboard";
-const QuestionSeconds = 5;
-const AnswerSeconds = 3;
-const LeaderboardSeconds = 3;
+const QuestionSeconds = 10;
+const AnswerSeconds = 5;
+const LeaderboardSeconds = 5;
 
 export function Session(props: Props) {
   const [status, setStatus] = createSignal<Status>("connecting");
@@ -177,7 +177,9 @@ export function Session(props: Props) {
       <Show when={status() == "question" && state.current}>
         <Question seconds={seconds()} />
       </Show>
-      <Show when={status() == "answer"}>This is the answer component</Show>
+      <Show when={status() == "answer"}>
+        <Question seconds={seconds()} showAnswer={true} />
+      </Show>
       <Show when={status() == "leaderboard"}>
         This is the leaderboard component
       </Show>

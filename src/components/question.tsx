@@ -1,9 +1,11 @@
-import { For, Show, createSignal, onCleanup, useContext } from "solid-js";
+import { For, Show, useContext } from "solid-js";
 import type { Question } from "../schema";
 import { SessionContext } from "./session-context";
+import { cn } from "../utils/styles";
 
 interface Props {
   seconds: number;
+  showAnswer?: boolean;
 }
 
 export function Question(props: Props) {
@@ -23,9 +25,11 @@ export function Question(props: Props) {
         <span class="flex-grow text-2xl font-medium text-zinc-400">
           Question {current.id}
         </span>
-        <span class="font-semibold text-4xl bg-zinc-800 border-[6px] border-purple-500 rounded-full p-4 w-20 h-20 flex items-center justify-center">
-          {props.seconds}
-        </span>
+        <Show when={!props.showAnswer}>
+          <span class="font-semibold text-4xl bg-zinc-800 border-[6px] border-purple-500 rounded-full p-4 w-20 h-20 flex items-center justify-center">
+            {props.seconds}
+          </span>
+        </Show>
       </div>
       <div class="flex flex-grow items-center justify-center w-full">
         <div class="w-full flex gap-12">
@@ -54,7 +58,18 @@ export function Question(props: Props) {
 
       <div class="grid grid-cols-2 gap-6 w-full">
         <For each={current.template.choices}>
-          {(choice) => <button class="btn-choice">{choice}</button>}
+          {(choice) => (
+            <button
+              class={cn(
+                "btn-choice",
+                props.showAnswer && choice === current.template.answer
+                  ? "correct"
+                  : "",
+              )}
+            >
+              {choice}
+            </button>
+          )}
         </For>
       </div>
     </>

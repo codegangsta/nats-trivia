@@ -20,6 +20,9 @@ dependencies:
   astro:
     specifier: ^4.6.3
     version: 4.6.3(typescript@5.4.5)
+  nats.ws:
+    specifier: ^1.24.0
+    version: 1.24.0
   solid-js:
     specifier: ^1.8.17
     version: 1.8.17
@@ -3030,6 +3033,21 @@ packages:
     dev: false
     optional: true
 
+  /nats.ws@1.24.0:
+    resolution: {integrity: sha512-s9+nlVG5AIi0lBHTyyYf0Kj9FQw0s9jWqYeAqPe09Z95KQQDmnTzkiCnKHOqPs7JA3j8k0vA9OM1XHy0P001kg==}
+    optionalDependencies:
+      nkeys.js: 1.1.0
+    dev: false
+
+  /nkeys.js@1.1.0:
+    resolution: {integrity: sha512-tB/a0shZL5UZWSwsoeyqfTszONTt4k2YS0tuQioMOD180+MbombYVgzDUYHlx+gejYK6rgf08n/2Df99WY0Sxg==}
+    engines: {node: '>=10.0.0'}
+    requiresBuild: true
+    dependencies:
+      tweetnacl: 1.0.3
+    dev: false
+    optional: true
+
   /nlcst-to-string@3.1.1:
     resolution: {integrity: sha512-63mVyqaqt0cmn2VcI2aH6kxe1rLAmSROqHMA0i4qqg1tidkfExgpb0FGMikMCn86mw5dFtBtEANfmSSK7TjNHw==}
     dependencies:
@@ -4008,6 +4026,12 @@ packages:
     requiresBuild: true
     dependencies:
       safe-buffer: 5.2.1
+    dev: false
+    optional: true
+
+  /tweetnacl@1.0.3:
+    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
+    requiresBuild: true
     dev: false
     optional: true
 

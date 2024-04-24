@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/layout.astro'
+import { Session } from "../components/session"
+---
+
+<Layout title="NATS Trivia">
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="tv-bounding-box relative flex flex-col items-center justify-center gap-9 p-9">
+      <Session client:only id="synadia" connectOptions={{
+      }}/>
+    </div>
+  </div>
+</Layout>

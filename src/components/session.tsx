@@ -3,6 +3,7 @@ import {
   connect,
   jwtAuthenticator,
   type ConnectionOptions,
+  type KV,
   type KvEntry,
 } from "nats.ws";
 import {
@@ -22,19 +23,27 @@ import type {
 import { createStore } from "solid-js/store";
 import { SessionContext } from "./session-context";
 import { Question } from "./question";
+import { createTimer } from "@solid-primitives/timer";
 
 interface Props {
   id: string;
   connectOptions: ConnectionOptions;
 }
 
+type Status = "connecting" | "question" | "answer" | "leaderboard";
+const QuestionSeconds = 5;
+const AnswerSeconds = 3;
+const LeaderboardSeconds = 3;
+
 export function Session(props: Props) {
+  const [status, setStatus] = createSignal<Status>("connecting");
   const [state, setState] = createStore<SessionType>({
     id: props.id,
     questions: {},
     questionTemplates: {},
   });
-  const [ready, setReady] = createSignal(false);
+  const [kv, setKv] = createSignal<KV>();
+  const [seconds, setSeconds] = createSignal(0);
 
   const opts: ConnectionOptions = {
     servers: ["wss://connect.ngs.global"],
@@ -66,6 +75,11 @@ export function Session(props: Props) {
         }
         break;
 
+      case "current":
+        const question = jc.decode(e.value) as QuestionType;
+        setState("current", question);
+        break;
+
       case "players":
         console.log("Got player update", jc.decode(e.value));
         break;
@@ -83,12 +97,11 @@ export function Session(props: Props) {
   createEffect(async () => {
     const nc = conn();
     if (!nc) return;
-    console.log("Creating kv");
 
     const js = nc.jetstream();
 
     const kv = await js.views.kv("trivia");
-    console.log("Got KV", kv);
+    setKv(kv);
 
     // put seed question templates in here for now
     questions.forEach(async (q) => {
@@ -104,15 +117,7 @@ export function Session(props: Props) {
       const w = await kv.watch({
         key: `session.${props.id}.>`,
         initializedFn: () => {
-          setReady(true);
-          const now = new Date();
-          let expiry = new Date(now.getTime() + 60 * 1000);
-          const question: QuestionType = {
-            id: "1",
-            template: state.questionTemplates["1"],
-            expiryTime: expiry,
-          };
-          setState("current", question);
+          chooseQuestion();
         },
       });
       for await (const e of w) {
@@ -126,12 +131,55 @@ export function Session(props: Props) {
     console.log("Closed NATS connection");
   });
 
+  const chooseQuestion = async () => {
+    console.log("Choosing question");
+    const keys = Object.keys(state.questionTemplates);
+    const key = keys[Math.floor(Math.random() * keys.length)];
+
+    const question: QuestionType = {
+      id: Math.random().toString(36).substring(7),
+      template: state.questionTemplates[key],
+    };
+    await kv()?.put(`session.${props.id}.current`, jc.encode(question));
+    setStatus("question");
+    setSeconds(QuestionSeconds);
+  };
+
+  createTimer(
+    async () => {
+      setSeconds((prev) => Math.max(prev - 1, 0));
+
+      if (seconds() == 0) {
+        switch (status()) {
+          case "question":
+            setStatus("answer");
+            setSeconds(AnswerSeconds);
+            break;
+
+          case "answer":
+            setStatus("leaderboard");
+            setSeconds(LeaderboardSeconds);
+            break;
+
+          case "leaderboard":
+            await chooseQuestion();
+            break;
+        }
+      }
+    },
+    1000,
+    setInterval,
+  );
+
   return (
     <SessionContext.Provider value={{ state, setState }}>
-      <Show when={!ready() && !conn()}>Connecting to NATS...</Show>
-      <Show when={!ready() && conn()}>Downloading state...</Show>
-      <Show when={state.current}>
-        <Question />
+      <Show when={status() == "connecting"}>Connecting to NATS...</Show>
+      <Show when={status() == "question" && state.current}>
+        <Question seconds={seconds()} />
+      </Show>
+      <Show when={status() == "answer"}>This is the answer component</Show>
+      <Show when={status() == "leaderboard"}>
+        This is the leaderboard component
       </Show>
     </SessionContext.Provider>
   );

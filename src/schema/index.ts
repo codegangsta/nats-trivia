@@ -25,7 +25,6 @@ export type QuestionTemplate = z.infer<typeof QuestionTemplateSchema>;
 export const QuestionSchema = z.object({
   id: z.string(),
   template: QuestionTemplateSchema,
-  expiryTime: z.date(),
 });
 export type Question = z.infer<typeof QuestionSchema>;
 

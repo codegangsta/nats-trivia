@@ -1,33 +1,21 @@
-import {
-  For,
-  createEffect,
-  createSignal,
-  onCleanup,
-  useContext,
-} from "solid-js";
+import { For, Show, createSignal, onCleanup, useContext } from "solid-js";
 import type { Question } from "../schema";
 import { SessionContext } from "./session-context";
 
-export function Question() {
-  const [seconds, setSeconds] = createSignal(0);
+interface Props {
+  seconds: number;
+}
+
+export function Question(props: Props) {
   const context = useContext(SessionContext);
   if (!context) {
     throw new Error("SessionContext is not provided");
   }
   const { state, setState } = context;
-  const current = state.current as Question;
-
-  const calculateSeconds = () => {
-    const s = Math.round((current.expiryTime.getTime() - Date.now()) / 1000);
-    return s < 0 ? 0 : s;
-  };
-
-  const timer = setInterval(() => {
-    setSeconds(calculateSeconds());
-  }, 1000);
-
-  onCleanup(() => clearInterval(timer));
-  setSeconds(calculateSeconds());
+  const current = state.current;
+  if (!current) {
+    return null;
+  }
 
   return (
     <>
@@ -36,7 +24,7 @@ export function Question() {
           Question {current.id}
         </span>
         <span class="font-semibold text-4xl bg-zinc-800 border-[6px] border-purple-500 rounded-full p-4 w-20 h-20 flex items-center justify-center">
-          {seconds()}
+          {props.seconds}
         </span>
       </div>
       <div class="flex flex-grow items-center justify-center w-full">

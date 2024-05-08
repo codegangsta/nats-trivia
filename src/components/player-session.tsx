@@ -1,9 +1,10 @@
 import { createStore } from "solid-js/store";
 import type { PlayerAnswer, Session as SessionType } from "../schema";
-import { Match, Show, Switch } from "solid-js";
+import { Match, Switch, createSignal } from "solid-js";
 import { connect, jwtAuthenticator } from "nats.ws";
 import { createKV } from "../lib/nats-kv";
 import { Question } from "./question";
+import { Login } from "./login";
 
 interface Props {
   id: string;
@@ -15,6 +16,9 @@ const jwt =
 export function PlayerSession(props: Props) {
   const id = Math.random().toString(36).substring(7);
   const name = "jeremy";
+  const [username, setUsername] = createSignal(
+    localStorage.getItem("username"),
+  );
 
   const [session, setSession] = createStore<Partial<SessionType>>({
     id: props.id,
@@ -52,6 +56,9 @@ export function PlayerSession(props: Props) {
   return (
     <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
       <Switch fallback={<div>Loading...</div>}>
+        <Match when={!username()}>
+          <Login onLogin={console.log} />
+        </Match>
         <Match when={session.state == "question" && session.current}>
           <Question
             question={session.current}

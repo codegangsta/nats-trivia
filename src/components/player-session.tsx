@@ -5,6 +5,7 @@ import { connect, jwtAuthenticator } from "nats.ws";
 import { createKV } from "../lib/nats-kv";
 import { Question } from "./question";
 import { Login } from "./login";
+import { Leaderboard } from "./leaderboard";
 
 interface Props {
   id: string;
@@ -21,6 +22,9 @@ export function PlayerSession(props: Props) {
 
   const [session, setSession] = createStore<Partial<SessionType>>({
     id: props.id,
+    leaderboard: {
+      players: [],
+    },
   });
 
   const login = (username: string) => {
@@ -82,7 +86,12 @@ export function PlayerSession(props: Props) {
           <Question question={session.current} showAnswer />
         </Match>
 
-        <Match when={session.state == "leaderboard"}>Showing Leaderboard</Match>
+        <Match when={session.state == "leaderboard"}>
+          <Leaderboard
+            leaderboard={session.leaderboard}
+            currentPlayerId={id()}
+          />
+        </Match>
       </Switch>
     </div>
   );

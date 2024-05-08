@@ -24,6 +24,11 @@ export function PlayerSession(props: Props) {
     id: props.id,
   });
 
+  const login = (username: string) => {
+    localStorage.setItem("username", username);
+    setUsername(username);
+  };
+
   const nc = connect({
     servers: ["wss://connect.ngs.global"],
     authenticator: jwtAuthenticator(jwt),
@@ -57,7 +62,7 @@ export function PlayerSession(props: Props) {
     <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
       <Switch fallback={<div>Loading...</div>}>
         <Match when={!username()}>
-          <Login onLogin={console.log} />
+          <Login onLogin={login} />
         </Match>
         <Match when={session.state == "question" && session.current}>
           <Question

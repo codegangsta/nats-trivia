@@ -14,9 +14,6 @@ body {
   .btn-choice {
     @apply border-2 border-zinc-700 rounded-3xl px-4 py-3 lg:px-8 lg:py-6 lg:text-lg lg:text-left;
   }
-  .btn-choice:hover {
-    @apply bg-zinc-800;
-  }
 
   .btn-choice.selected {
     @apply border-purple-500 bg-purple-900/50 text-white font-bold;
@@ -24,6 +21,10 @@ body {
 
   .btn-choice.correct {
     @apply border-green-500 bg-green-700 text-white font-bold;
+  }
+
+  .btn-choice.incorrect {
+    @apply border-red-500 bg-red-700 text-white font-bold;
   }
 
   .chat-bubble {

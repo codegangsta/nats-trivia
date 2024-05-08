@@ -117,6 +117,11 @@ export function Question(props: Props) {
                 props.showAnswer && choice === props.question?.template.answer
                   ? "correct"
                   : "",
+                props.showAnswer &&
+                  choice === selected() &&
+                  choice !== props.question?.template.answer
+                  ? "incorrect"
+                  : "",
                 choice === selected() ? "selected" : "",
               )}
             >

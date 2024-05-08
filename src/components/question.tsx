@@ -1,4 +1,4 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { For, Match, Show, Switch, createEffect, createSignal } from "solid-js";
 import type { Question as QuestionType } from "../schema";
 import { cn } from "../utils/styles";
 
@@ -59,19 +59,45 @@ export function Question(props: Props) {
       </div>
       <div class="flex flex-grow items-center justify-center w-full">
         <div class="w-full items-center justify-center flex flex-col lg:flex-row gap-6 lg:gap-12">
-          <img
-            src="/people/jeremy.jpeg"
-            class="rounded-full w-36 h-36 border-[2px] border-zinc-800 lg:self-end"
-          />
+          <Switch>
+            <Match when={props.question.template.mystery && !props.showAnswer}>
+              <div class="rounded-full w-36 h-36 border-[2px] border-zinc-800 lg:self-end bg-zinc-800 flex flex-none items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="120"
+                  height="120"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-circle-help stroke-zinc-600"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <path d="M12 17h.01" />
+                </svg>
+              </div>
+            </Match>
+            <Match when={!props.question.template.mystery || props.showAnswer}>
+              <img
+                src={props.question.template.employee.image}
+                class="rounded-full w-36 h-36 border-[2px] border-zinc-800 lg:self-end"
+              />
+            </Match>
+          </Switch>
           <div class="flex flex-col gap-6 lg:gap-2">
-            <span class="flex flex-col lg:flex-row text-center lg:gap-2">
-              <span class="font-medium text-zinc-50">
-                {props.question.template.employee.name}
+            <Show when={!props.question.template.mystery || props.showAnswer}>
+              <span class="flex flex-col lg:flex-row text-center lg:gap-2">
+                <span class="font-medium text-zinc-50">
+                  {props.question.template.employee.name}
+                </span>
+                <span class="text-zinc-400">
+                  {props.question.template.employee.title}
+                </span>
               </span>
-              <span class="text-zinc-400">
-                {props.question.template.employee.title}
-              </span>
-            </span>
+            </Show>
             <span class="chat-bubble self-start">
               <span class="lg:text-4xl font-semibold">
                 {props.question.template.question}

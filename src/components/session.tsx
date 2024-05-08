@@ -15,7 +15,7 @@ import { Leaderboard } from "./leaderboard";
 import { createId } from "@paralleldrive/cuid2";
 
 const jwt =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJlZDI1NTE5LW5rZXkifQ.eyJqdGkiOiJIUEJKS01SNkpHMlJKRlg3N1ZWQU1MUjNPVldCRENMSUpYSkwzMklGWExGM1lRTkRQTkhRIiwiaWF0IjoxNzEzOTA3MDUzLCJpc3MiOiJBQ0MyTllZRFFSWkFBTk5WNkNHNDdYUklBWkxZMlhSTjVNMkpWUkZWUFFZQ083WUU1SU9aSFlSSCIsIm5hbWUiOiJ0cml2aWEiLCJzdWIiOiJVRFk2QUJPTFJNNlhMTFY3RTQ3UVlCWE42S04zT0ZQWkFORzQzR1lOVVdUN01WVEFBQ1FLNUlKVyIsIm5hdHMiOnsicHViIjp7fSwic3ViIjp7fSwic3VicyI6LTEsImRhdGEiOi0xLCJwYXlsb2FkIjotMSwiYmVhcmVyX3Rva2VuIjp0cnVlLCJpc3N1ZXJfYWNjb3VudCI6IkFBRDdUS1JMTE5LRFdFQlZMREY0S0FZRFNYM1FPUERENE80QzZONFlZUk0zREpOV002TFdXVEpDIiwidHlwZSI6InVzZXIiLCJ2ZXJzaW9uIjoyfX0.UkMAAFj7YyrQEWE7Qq3grxxL1Qs90oGibd6kl_DNw-sBV7YVtctGbSIAZExUGkjvPIFbKi3rsRAkjb52Gje2AQ";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJlZDI1NTE5LW5rZXkifQ.eyJqdGkiOiJRWUtSNFZJT1lXSUhBT0ZFWjJWQUI2NkhRWkxTNVZKRFM2RFdVWUxDNU1HTEZTTFlDTkxBIiwiaWF0IjoxNzE1MjA0MzA3LCJpc3MiOiJBQlRCS1FFV0g0SjQ0WjVTNENPUEpJNkk2V0pERUwyMzZaTkRKWkFUMlZVWEVMNVVERUtWSlZTQiIsIm5hbWUiOiJ0cml2aWEiLCJzdWIiOiJVQUs2Rk9MWkpDQllNVEhGT1BWRjRMTUFQM1EySlNFN0ZGQkdPTklRNjdaTVhUMzI2NDRLNDJUVyIsIm5hdHMiOnsicHViIjp7fSwic3ViIjp7fSwic3VicyI6LTEsImRhdGEiOi0xLCJwYXlsb2FkIjotMSwiYmVhcmVyX3Rva2VuIjp0cnVlLCJpc3N1ZXJfYWNjb3VudCI6IkFDNVBQM0lFNjVKT0RERVZRT1NWWFpITDNISVhHWVNCWDNNVEhKSkpXTjdQSUhSNko0RVZXM1VZIiwidHlwZSI6InVzZXIiLCJ2ZXJzaW9uIjoyfX0.l6Qt_-bo62wbZ0_D2vSmvTcPZyGhUysATWrf9dRJCL9F2Imb_UMNxgCK_xx6Ru3DR8hGx_1BJFrwrOAMnQYXAg";
 
 interface Props {
   id: string;
@@ -39,7 +39,7 @@ export function Session(props: Props) {
     authenticator: jwtAuthenticator(jwt),
   });
 
-  const kv = createKV(nc, "nats_trivia");
+  const kv = createKV(nc, "trivia");
   kv.watch(`session.${session.id}.>`, (k, v) => {
     const parts = k.split(".").slice(2);
     /*@ts-ignore*/
@@ -119,16 +119,16 @@ export function Session(props: Props) {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(2);
+        setSeconds(10);
         break;
 
       case "answer":
-        setSeconds(2);
+        setSeconds(5);
         calculateLeaderboard();
         break;
 
       case "leaderboard":
-        setSeconds(2);
+        setSeconds(10);
         break;
     }
   });

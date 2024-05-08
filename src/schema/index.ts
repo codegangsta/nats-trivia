@@ -24,6 +24,7 @@ export const QuestionTemplateSchema = z.object({
   id: z.string(),
   employee: EmployeeSchema,
   question: z.string(),
+  mystery: z.boolean().optional(),
   choices: z.array(z.string()),
   answer: z.string(),
 });

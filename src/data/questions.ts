@@ -49,7 +49,7 @@ const questions: QuestionTemplate[] = [
   {
     id: "2",
     employee: derek,
-    question: "What was Derek's first computer?",
+    question: "What was my first computer?",
     choices: randomize(["Commodore 64", "Apple II", "TRS-80", "Atari 2600"]),
     answer: "Commodore 64",
   },

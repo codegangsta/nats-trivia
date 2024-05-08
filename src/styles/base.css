@@ -8,7 +8,7 @@ body {
 
 @layer components {
   .tv-bounding-box {
-    @apply w-[640px] h-[360px] hd:w-[1280px] hd:h-[720px] fhd:w-[1920px] fhd:h-[1080px];
+    @apply w-[1280px] h-[720px] scale-75 hd:scale-100 fhd:scale-150 uhd:scale-[300%];
   }
 
   .btn-choice {

@@ -41,7 +41,7 @@ export function PlayerSession(props: Props) {
     authenticator: jwtAuthenticator(jwt),
   });
 
-  const kv = createKV(nc, "trivia");
+  const kv = createKV(nc, "nats_trivia");
   kv.watch(`session.${session.id}.*`, (k, v) => {
     const parts = k.split(".").slice(2);
     /*@ts-ignore*/

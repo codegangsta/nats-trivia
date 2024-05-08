@@ -22,6 +22,7 @@ interface Props {
 }
 
 export function Session(props: Props) {
+  let askedQuestions: string[] = [];
   const [seconds, setSeconds] = createSignal(0);
   const [session, setSessionInternal] = createStore<SessionType>({
     id: props.id,
@@ -38,7 +39,7 @@ export function Session(props: Props) {
     authenticator: jwtAuthenticator(jwt),
   });
 
-  const kv = createKV(nc, "trivia");
+  const kv = createKV(nc, "nats_trivia");
   kv.watch(`session.${session.id}.>`, (k, v) => {
     const parts = k.split(".").slice(2);
     /*@ts-ignore*/
@@ -54,11 +55,26 @@ export function Session(props: Props) {
     const keys = Object.keys(session.questionTemplates);
     const key = keys[Math.floor(Math.random() * keys.length)];
 
+    // make sure we don't choose a question that has already been asked
+    // if we have asked all the questions, reset the list
+    if (askedQuestions.length == keys.length) {
+      console.log("resetting questions");
+      askedQuestions = [];
+    }
+
+    if (askedQuestions.includes(key)) {
+      console.log("Question already asked, choosing another.", key);
+      chooseQuestion();
+      return;
+    }
+    askedQuestions.push(key);
+
     const question: QuestionType = {
       id: createId(),
       template: session.questionTemplates[key],
       answers: {},
     };
+
     setSession("current", question);
     setSession("state", "question");
     setSession("questions", question.id, question);
@@ -103,16 +119,16 @@ export function Session(props: Props) {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(10);
+        setSeconds(2);
         break;
 
       case "answer":
-        setSeconds(5);
+        setSeconds(2);
         calculateLeaderboard();
         break;
 
       case "leaderboard":
-        setSeconds(5);
+        setSeconds(2);
         break;
     }
   });

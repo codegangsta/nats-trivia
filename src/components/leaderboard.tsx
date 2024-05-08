@@ -10,7 +10,6 @@ export function Leaderboard(props: Props) {
   if (!props.leaderboard) {
     return <div>...</div>;
   }
-  console.log("Rendering leaderboard", props.leaderboard.players.length);
 
   const sortedPlayers = [...props.leaderboard.players].sort(
     (a, b) => b.score - a.score,

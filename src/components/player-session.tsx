@@ -6,6 +6,7 @@ import { createKV } from "../lib/nats-kv";
 import { Question } from "./question";
 import { Login } from "./login";
 import { Leaderboard } from "./leaderboard";
+import { createId } from "@paralleldrive/cuid2";
 
 interface Props {
   id: string;
@@ -29,7 +30,7 @@ export function PlayerSession(props: Props) {
 
   const login = (username: string) => {
     localStorage.setItem("username", username);
-    const uid = Math.random().toString(36).substring(7);
+    const uid = createId();
     localStorage.setItem("userId", uid);
     setId(uid);
     setUsername(username);

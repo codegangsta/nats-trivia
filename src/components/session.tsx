@@ -171,7 +171,9 @@ export function Session(props: Props) {
       </Match>
 
       <Match when={session.state == "leaderboard"}>
-        <Leaderboard leaderboard={session.leaderboard} />
+        <div class="mt-32 w-full h-full">
+          <Leaderboard leaderboard={session.leaderboard} />
+        </div>
       </Match>
     </Switch>
   );

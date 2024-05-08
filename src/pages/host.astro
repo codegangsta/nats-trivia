@@ -5,6 +5,12 @@ import { Session } from "../components/session"
 
 <Layout title="NATS Trivia">
   <div class="absolute inset-0 flex items-center justify-center">
+    <div class="absolute top-10 left-10">
+      <img src="/qr-code.png" class="w-40 h-40 rounded" />
+    </div>
+    <div class="absolute top-10 left-10 right-0 text-center text-xl text-zinc-300 font-bold">
+      https://nats-trivia.vercel.app
+    </div>
     <div class="tv-bounding-box overflow-clip relative flex flex-col items-center justify-center gap-9 p-9">
       <Session client:only id="synadia"/>
     </div>

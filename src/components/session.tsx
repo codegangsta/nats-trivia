@@ -1,6 +1,7 @@
 import { Match, Switch, createEffect, createSignal } from "solid-js";
 
 import {
+  type Leaderboard as LeaderboardType,
   type Question as QuestionType,
   type Session as SessionType,
 } from "../schema";
@@ -23,9 +24,11 @@ export function Session(props: Props) {
   const [session, setSessionInternal] = createStore<SessionType>({
     id: props.id,
     questions: {},
-    answers: {},
     questionTemplates: questionTemplates,
     state: "question",
+    leaderboard: {
+      players: [],
+    },
   });
 
   const nc = connect({
@@ -67,19 +70,48 @@ export function Session(props: Props) {
     return session.questions[key];
   };
 
+  const calculateLeaderboard = () => {
+    console.log("Calculating Leaderboard");
+    const questions = unwrap(session.questions);
+    const leaderboard: LeaderboardType = {
+      players: [],
+    };
+
+    for (const question of Object.values(questions)) {
+      for (const answer of Object.values(question.answers)) {
+        const player = leaderboard.players.find(
+          (p) => p.id == answer.player.id,
+        );
+
+        if (!player) {
+          leaderboard.players.push({
+            id: answer.player.id,
+            name: answer.player.name,
+            score: 1,
+          });
+        } else {
+          player.score++;
+        }
+      }
+    }
+
+    console.log("Leaderboard", leaderboard);
+    kv.put(`session.${session.id}.leaderboard`, leaderboard);
+  };
+
   createEffect(() => {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(30);
+        setSeconds(10);
         break;
 
       case "answer":
         setSeconds(5);
+        calculateLeaderboard();
         break;
 
       case "leaderboard":
-        // setSession("current", null);
         setSeconds(5);
         break;
     }

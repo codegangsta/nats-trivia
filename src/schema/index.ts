@@ -36,12 +36,19 @@ export const QuestionSchema = z.object({
 });
 export type Question = z.infer<typeof QuestionSchema>;
 
+export const LeaderboardSchema = z.object({
+  players: z.array(
+    z.intersection(PlayerSchema, z.object({ score: z.number() })),
+  ),
+});
+export type Leaderboard = z.infer<typeof LeaderboardSchema>;
+
 export const SessionSchema = z.object({
   id: z.string(),
   questionTemplates: z.record(z.string(), QuestionTemplateSchema),
   questions: z.record(z.string(), QuestionSchema),
-  answers: z.record(z.string(), PlayerAnswerSchema),
   current: QuestionSchema.optional(),
   state: z.enum(["connecting", "question", "answer", "leaderboard"]),
+  leaderboard: LeaderboardSchema.optional(),
 });
 export type Session = z.infer<typeof SessionSchema>;

@@ -96,17 +96,18 @@ export function Session(props: Props) {
 
     for (const question of Object.values(questions)) {
       for (const answer of Object.values(question.answers)) {
-        const player = leaderboard.players.find(
-          (p) => p.id == answer.player.id,
-        );
+        let player = leaderboard.players.find((p) => p.id == answer.player.id);
 
         if (!player) {
-          leaderboard.players.push({
+          player = {
             id: answer.player.id,
             name: answer.player.name,
-            score: 1,
-          });
-        } else {
+            score: 0,
+          };
+          leaderboard.players.push(player);
+        }
+
+        if (answer.answer == question.template.answer) {
           player.score++;
         }
       }

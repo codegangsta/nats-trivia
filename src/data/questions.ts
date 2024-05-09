@@ -262,6 +262,13 @@ const questions: QuestionTemplate[] = [
     ]),
     answer: "With and Without",
   },
+  {
+    id: "21",
+    employee: nats,
+    question: "What language was NATS originally written in?",
+    choices: randomize(["Ruby", "Go", "C", "A bunch of bash scripts"]),
+    answer: "Ruby",
+  },
 ];
 
 export const questionTemplates = questions.reduce(

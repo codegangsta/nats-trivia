@@ -207,6 +207,61 @@ const questions: QuestionTemplate[] = [
     ]),
     answer: "Brian Flannery",
   },
+  {
+    id: "16",
+    employee: {
+      name: "Ginger Collison",
+      title: "Business Operations",
+      image: "/people/ginger.jpg",
+    },
+    question: "My guilty pleasure is watching Real Housewives of Beverly Hills",
+    mystery: true,
+    choices: randomize(["Ginger", "Mike", "Wally", "David"]),
+    answer: "Ginger",
+  },
+  {
+    id: "17",
+    employee: {
+      name: "Lev Brouk",
+      title: "Software Engineer",
+      image: "/people/lev.jpg",
+    },
+    question: "My hobby is kitesurfing",
+    mystery: true,
+    choices: randomize(["Lev", "Aleksei", "Marco", "Jean-Noel"]),
+    answer: "Lev",
+  },
+  {
+    id: "18",
+    employee: {
+      name: "Alberto",
+      title: "Software Engineer",
+      image: "/people/alberto.jpg",
+    },
+    question: `My favorite food is "anything that's not a vegetable"`,
+    mystery: true,
+    choices: randomize(["Alberto", "Evelyn", "Phil", "John"]),
+    answer: "Alberto",
+  },
+  {
+    id: "19",
+    employee: synadia,
+    question: "How many major iterations of the Synadia logo have there been?",
+    choices: randomize(["4", "3", "5", "8"]),
+    answer: "4",
+  },
+  {
+    id: "20",
+    employee: synadia,
+    question: "What does Synadia mean?",
+    choices: randomize([
+      "Synchronous Network Application Delivery In Action",
+      "Weaving Together",
+      "With and Without",
+      "Synchronicity Together",
+    ]),
+    answer: "With and Without",
+  },
 ];
 
 export const questionTemplates = questions.reduce(

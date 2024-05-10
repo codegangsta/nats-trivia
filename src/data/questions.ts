@@ -332,13 +332,53 @@ const questions: QuestionTemplate[] = [
     },
     mystery: true,
     question: "Not many of you may know this, but I'm french.",
-    choices: randomize([
-      "Jean-Noël Moyne",
+    choices: [
       "John Noelle Moin",
+      "Jean-Noël Moyne",
       "Jon-nole Maine",
       "All of the above",
-    ]),
+    ],
     answer: "Jean-Noël Moyne",
+  },
+  {
+    id: "27",
+    employee: {
+      name: "Poland",
+      title: "We should set up an office here...",
+      image: "/people/poland.jpg",
+    },
+    mystery: true,
+    question: "I live in Poland",
+    choices: ["Aleksei", "Tomasz", "Piotr", "All of the above"],
+    answer: "All of the above",
+  },
+  {
+    id: "28",
+    employee: {
+      name: "Wally Quevedo",
+      title: "Software Engineer",
+      image: "/people/wally.jpg",
+    },
+    question: "My favorite TV show is...",
+    choices: randomize([
+      "The Office",
+      "The Wire",
+      "Breaking Bad",
+      "Twin Peaks",
+    ]),
+    answer: "Twin Peaks",
+  },
+  {
+    id: "29",
+    employee: {
+      name: "David Gee",
+      title: "Director of Product Management",
+      image: "/people/david.png",
+    },
+    question:
+      "I like tinkering in my workshop and fiddling with my motorcycle.",
+    choices: randomize(["David G", "David B", "Steve", "Marco"]),
+    answer: "David G",
   },
 ];
 

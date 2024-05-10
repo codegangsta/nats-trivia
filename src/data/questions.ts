@@ -1,3 +1,4 @@
+import { Portal } from "solid-js/web";
 import type { Employee, QuestionTemplate } from "../schema";
 
 const jeremy: Employee = {
@@ -268,6 +269,76 @@ const questions: QuestionTemplate[] = [
     question: "What language was NATS originally written in?",
     choices: randomize(["Ruby", "Go", "C", "A bunch of bash scripts"]),
     answer: "Ruby",
+  },
+  {
+    id: "22",
+    employee: {
+      name: "Scott Fauerbach",
+      title: "Software Engineer: NATS Clients",
+      image: "/people/scott.jpg",
+    },
+    mystery: true,
+    question: "My favorite hobby outside of work is playing poker.",
+    choices: randomize(["Scott", "Aleksei", "Mike", "Jan"]),
+    answer: "Scott",
+  },
+  {
+    id: "23",
+    employee: {
+      name: "Mike Blodgett",
+      title: "Technical Writer",
+      image: "/people/mike.jpg",
+    },
+    mystery: true,
+    question: "I have an old ornery cat named Ginny.",
+    choices: randomize(["Mike", "Claire", "Lev", "Piotr"]),
+    answer: "Mike",
+  },
+  {
+    id: "24",
+    employee: {
+      name: "Tomasz Pietrek",
+      title: "OSS Engineering Manager",
+      image: "/people/tomasz.jpg",
+    },
+    question: "Before becoming a software engineer, I wanted to be...",
+    choices: randomize([
+      "a professional soccer player",
+      "a chef",
+      "a famous actor",
+      "a famous musician",
+    ]),
+    answer: "a famous musician",
+  },
+  {
+    id: "25",
+    employee: {
+      name: "Jarret Lavallee",
+      title: "Senior Support Engineer",
+      image: "/people/jarret.jpg",
+    },
+    mystery: true,
+    question:
+      "My favorite hobby is metal fabrication and restoring classic vehicles",
+    choices: randomize(["Jarret", "Scott", "Seth", "Wally"]),
+    answer: "Jarret",
+  },
+  {
+    id: "26",
+    employee: {
+      name: "Jean-Noël Moyne",
+      title: "Field CTO",
+      image: "/people/jnm.jpg",
+    },
+    mystery: true,
+    question: "Not many of you may know this, but I'm french.",
+    choices: randomize([
+      "Jean-Noël Moyne",
+      "John Noelle Moin",
+      "Jon-nole Maine",
+      "All of the above",
+    ]),
+    answer: "Jean-Noël Moyne",
   },
 ];
 

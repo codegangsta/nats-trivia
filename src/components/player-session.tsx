@@ -39,6 +39,7 @@ export function PlayerSession(props: Props) {
   const nc = connect({
     servers: ["wss://connect.ngs.global"],
     authenticator: jwtAuthenticator(jwt),
+    name: "trivia-player",
   });
 
   const kv = createKV(nc, "trivia");

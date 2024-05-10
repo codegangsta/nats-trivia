@@ -121,7 +121,7 @@ export function Session(props: Props) {
     switch (session.state) {
       case "question":
         chooseQuestion();
-        setSeconds(30);
+        setSeconds(15);
         break;
 
       case "answer":
@@ -130,7 +130,7 @@ export function Session(props: Props) {
         break;
 
       case "leaderboard":
-        setSeconds(10);
+        setSeconds(5);
         break;
     }
   });
